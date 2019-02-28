@@ -1,0 +1,31 @@
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+set(TOOLCHAIN_PREFIX arm-none-eabi-)
+set(TOOLCHAIN_TRIPLE arm-none-eabi)
+
+set(CMAKE_C_COMPILER_WORKS TRUE)
+set(CMAKE_CXX_COMPILER_WORKS TRUE)
+set(ARM_TOOLCHAIN_DIR "$ENV{HOME}/Libraries/iot_sdk/compilers/gcc-arm-none-eabi-7-2018-q2")
+set(CMAKE_C_COMPILER clang)
+set(CMAKE_C_COMPILER_TARGET ${TOOLCHAIN_TRIPLE})
+set(CMAKE_CXX_COMPILER clang++)
+set(CMAKE_CXX_COMPILER_TARGET ${TOOLCHAIN_TRIPLE})
+set(CROSS_COMPILED "-isystem${ARM_TOOLCHAIN_DIR} -isystem${ARM_TOOLCHAIN_DIR}/arm-none-eabi -isystem${ARM_TOOLCHAIN_DIR}/arm-none-eabi/include -isystem${ARM_TOOLCHAIN_DIR}/include")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CROSS_COMPILED} -Os")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --specs=nosys.specs")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CROSS_COMPILED} -Os -fno-exceptions -Wl,--print-map -Wl,-L${CMAKE_CURRENT_LIST_DIR}/linker_scripts/example0 -Wl,-Ttext2flash_memory_map.ld -Wl,-Tmy_sections.ld")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --specs=nosys.specs")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--print-map -Wl,-L${CMAKE_CURRENT_LIST_DIR}/linker_scripts/example0 -Wl,-Ttext2flash_memory_map.ld -Wl,-Tsections.ld")
+set(CMAKE_AR ${ARM_TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}ar)
+set(CMAKE_SYSROOT "${ARM_TOOLCHAIN_DIR}/arm-none-eabi")
+set(CMAKE_OBJCOPY ${ARM_TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}objcopy
+        CACHE FILEPATH "The toolchain objcopy command" FORCE)
+set(CMAKE_OBJDUMP ${ARM_TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}objdump
+        CACHE FILEPATH "The toolchain objdump command" FORCE)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
